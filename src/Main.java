@@ -1,4 +1,5 @@
 import java.util.*;
+import java.math.*;
 class RSA{
     private int p,q,n,e,d;
     private String original;
@@ -37,7 +38,7 @@ class RSA{
         return false;
     }
     public int generateE(){
-        for(int i = 1;i<=n;i++){
+        for(int i = 2;i<=n;i++){
             if(gcdCheck(i,calculatePhi())){
                 e = i;
                 return e;
@@ -61,26 +62,33 @@ class RSA{
         int len = s.length();
         int[] encrypted= new int[len];
         for(int i = 0;i<intToArr(s).length;i++){
-            encrypted[i]= (int)(Math.pow(original[i],e)) % n;
+            encrypted[i] = BigInteger.valueOf(original[i])
+                    .modPow(BigInteger.valueOf(e), BigInteger.valueOf(n))
+                    .intValue();
 
         }
         return encrypted;
     }
-    public String decrypt(int[] arr){
-        d = calculateD();
-        int[] encrypted = arr;
-        int [] decrypted = new int[encrypted.length];
-        for(int i = 0;i< encrypted.length;i++){
-            decrypted[i] = (int)(Math.pow(encrypted[i],d)) %n;
+    public String decrypt(String password, int[] arr){
+        if(password.equals("ankitamodak26")) {
+            d = calculateD();
+            int[] encrypted = arr;
+            int[] decrypted = new int[encrypted.length];
+            for (int i = 0; i < encrypted.length; i++) {
+                decrypted[i] = BigInteger.valueOf(encrypted[i])
+                        .modPow(BigInteger.valueOf(d), BigInteger.valueOf(n))
+                        .intValue();
+            }
+            String s = "";
+            for (int i = 0; i < decrypted.length; i++) {
+                s += (char) decrypted[i];
+            }
+            return s;
+        }else {
+            System.out.println("wronggg passcode!!!!");
+            return null;
         }
-        String s= "";
-        for(int i = 0 ;i< decrypted.length;i++){
-            s+=(char)decrypted[i];
-        }
-        return s;
     }
-
-
 }
 class primeNo{
     public boolean primeCheck(int num){
@@ -157,15 +165,15 @@ public class Main {
                     break;
 
                 case 2:
-
                     if (encrypted == null) {
 
                         System.out.println(
                                 "No encrypted message found!");
                     } else {
-
+                        System.out.println("enter passcode:");
+                        String passcode = sc.nextLine();
                         decrypted =
-                                obj2.decrypt(encrypted);
+                                obj2.decrypt(passcode,encrypted);
 
                         System.out.println(
                                 "Message Decrypted!");
