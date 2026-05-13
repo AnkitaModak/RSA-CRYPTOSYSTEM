@@ -13,16 +13,12 @@ class RSA{
     }
     public int calculateD(){
         int phi = calculatePhi();
-
         for(int i = 1; i < phi; i++) {
-
             if((e * i) % phi == 1) {
-
                 d = i;
                 return d;
             }
         }
-
         return -1;
     }
     public static boolean gcdCheck(int a, int b){
@@ -103,7 +99,6 @@ class primeNo{
     public int generate(int lwr,int upr){
         for(int i = upr; i>= lwr;i--){
             if(primeCheck(i)){
-
                 return i;
             }
         }
@@ -113,60 +108,36 @@ class primeNo{
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-
         System.out.println("Enter lower bound:");
         int lwr = Integer.valueOf(sc.nextLine());
-
         System.out.println("Enter upper bound:");
         int upr = Integer.valueOf(sc.nextLine());
-
         primeNo obj1 = new primeNo();
-
         int p = obj1.generate(lwr, upr);
-
         upr = p - 1;
-
         int q = obj1.generate(lwr, upr);
-
         RSA obj2 = new RSA(p, q);
-
         int[] encrypted = null;
-
         String decrypted = "";
-
         int choice;
-
         do {
-
             System.out.println("HERE'S ALL YOUR OPTIONS:");
-
             System.out.println("1. Encrypt Message");
             System.out.println("2. Decrypt Message");
             System.out.println("3. Show Encrypted Message");
             System.out.println("4. Show Decrypted Message");
             System.out.println("5. Exit");
-
             System.out.print("Enter choice: ");
-
             choice = Integer.valueOf(sc.nextLine());
-
             switch (choice) {
-
                 case 1:
-
                     System.out.println("Enter message:");
-
                     String s = sc.nextLine();
-
                     encrypted = obj2.encrypt(s);
-
                     System.out.println("Message Encrypted!");
-
                     break;
-
                 case 2:
                     if (encrypted == null) {
-
                         System.out.println(
                                 "No encrypted message found!");
                     } else {
@@ -174,51 +145,33 @@ public class Main {
                         String passcode = sc.nextLine();
                         decrypted =
                                 obj2.decrypt(passcode,encrypted);
-
                         System.out.println(
                                 "Message Decrypted!");
                     }
-
                     break;
-
                 case 3:
-
                     if (encrypted == null) {
-
                         System.out.println(
                                 "No encrypted message!");
                     } else {
-
                         System.out.println(
                                 Arrays.toString(encrypted));
                     }
-
                     break;
-
                 case 4:
-
                     if (decrypted.equals("")) {
-
                         System.out.println(
                                 "No decrypted message!");
                     } else {
-
                         System.out.println(decrypted);
                     }
-
                     break;
-
                 case 5:
-
                     System.out.println("Program Ended");
-
                     break;
-
                 default:
-
                     System.out.println("Invalid Choice");
             }
-
         } while (choice != 5);
     }
 }
